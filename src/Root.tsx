@@ -1,11 +1,11 @@
 import {Composition} from 'remotion';
-import {MyComposition, myCompSchema} from './Composition';
 import './style.css';
+import {Poly, PolySchema} from './Poly';
 
 export const RemotionRoot: React.FC = () => {
 	return (
 		<>
-			<Composition
+			{/* <Composition
 				id="MyComp"
 				component={MyComposition}
 				durationInFrames={240}
@@ -18,6 +18,16 @@ export const RemotionRoot: React.FC = () => {
 					titleColor: '#000000',
 					logoColor: '#00bfff',
 				}}
+			/> */}
+			<Composition
+				id="Poly"
+				component={Poly}
+				durationInFrames={240}
+				fps={30}
+				width={1280}
+				height={720}
+				schema={PolySchema}
+				defaultProps={{}}
 			/>
 		</>
 	);
