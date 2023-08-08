@@ -62,7 +62,6 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 			height,
 			circleRadius
 		);
-
 		balls.push(
 			<div className="flex" key={i}>
 				<div className="bg-black">
@@ -70,6 +69,7 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 						radius={circleRadius}
 						fill="white"
 						style={{
+							opacity: `${translateY / 720}`,
 							transform: `translateY(${translateY}px)`,
 						}}
 					/>
