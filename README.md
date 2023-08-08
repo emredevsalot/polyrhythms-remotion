@@ -1,8 +1,9 @@
 # TODOS
 
-- [ ] add different keys
-- [x] start balls at the top
-- [ ] calculate velocity for realignment
+- [x] Add different keys
+- [x] Start balls at the top
+- [x] Calculate velocity for realignment
+- [ ] Start from contact point again, to make them realign there.
 
 ## Remotion video with Tailwind
 
