@@ -48,41 +48,46 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 			[-1, 1],
 			[0, height - propOne * 2],
 			{
-				easing: Easing.bezier(0, 0, 0, 1),
+				easing: Easing.bezier(0, 0, 1, 0),
 			}
 		);
 		return {translateY, contactTime};
 	};
 
-	const {translateY, contactTime} = useBounceY(1);
 	const soundDelay = 8;
 
-	return (
-		<AbsoluteFill className="bg-gray-100 justify-end">
-			<Circle
-				radius={propOne}
-				fill="black"
-				style={{
-					// translateX(${useBounceX(1)}px)
-					transform: `translateY(-${translateY}px)`,
-				}}
-			/>
-			<Sequence from={contactTime - soundDelay}>
-				<Loop durationInFrames={contactTime * 2}>
+	const balls = [
+		1, 0.97,
+		// 1, 0.97, 0.94, 0.91, 0.88, 0.84, 0.81, 0.78, 0.75, 0.72, 0.69, 0.66,
+	].map((speed) => {
+		return (
+			<div className="flex">
+				<div className="justify-end bg-black">
+					<Circle
+						radius={propOne}
+						fill="white"
+						style={{
+							transform: `translateY(${useBounceY(speed).translateY}px)`,
+						}}
+					/>
+				</div>
+				<Loop durationInFrames={useBounceY(speed).contactTime * 2}>
 					<Audio
 						volume={0.2}
 						src={staticFile('key-6.wav')}
 						// startFrom={0}
-						endAt={contactTime * 2 - soundDelay}
+						endAt={useBounceY(speed).contactTime * 2 - soundDelay}
 					/>
 				</Loop>
-			</Sequence>
+			</div>
+		);
+	});
 
-			{/* <div className="absolute top-0">
-				<div>width:{width}</div>
-				<div>fps:{fps}</div>
-				<div>durationInFrames:{durationInFrames}</div>
-			</div> */}
+	return (
+		<AbsoluteFill className="bg-gray-100 flex">
+			<Sequence from={0}>
+				<div className="flex justify-evenly w-full">{balls}</div>
+			</Sequence>
 		</AbsoluteFill>
 	);
 };

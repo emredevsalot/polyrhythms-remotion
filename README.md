@@ -1,4 +1,10 @@
-# Remotion video with Tailwind
+# TODOS
+
+- [ ] add different keys
+- [ ] start video balls at the top
+- [ ] calculate velocity for realignment
+
+## Remotion video with Tailwind
 
 <p align="center">
   <a href="https://github.com/remotion-dev/logo">
