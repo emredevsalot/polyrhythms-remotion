@@ -22,12 +22,12 @@ export const RemotionRoot: React.FC = () => {
 			<Composition
 				id="Poly"
 				component={Poly}
-				durationInFrames={240}
-				fps={30}
+				durationInFrames={2400}
+				fps={60}
 				width={1280}
 				height={720}
 				schema={PolySchema}
-				defaultProps={{}}
+				defaultProps={{circleRadius: 36}}
 			/>
 		</>
 	);
