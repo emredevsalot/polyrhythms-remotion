@@ -1,7 +1,7 @@
 # TODOS
 
 - [ ] add different keys
-- [ ] start video balls at the top
+- [x] start balls at the top
 - [ ] calculate velocity for realignment
 
 ## Remotion video with Tailwind

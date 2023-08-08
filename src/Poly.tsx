@@ -31,9 +31,9 @@ const useBounceY = (
 	const translateY = interpolate(
 		jumpingAnimation,
 		[-1, 1],
-		[0, height - circleRadius * 2],
+		[height - circleRadius * 2, 0],
 		{
-			easing: Easing.bezier(0, 0, 1, 0),
+			easing: Easing.bezier(0, 1, 1, 1),
 		}
 	);
 	return {translateY, contactTime};
@@ -51,7 +51,7 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	const {height} = useVideoConfig();
 	const frame = useCurrentFrame();
 
-	const balls = ballSpeeds.map((speed) => {
+	const balls = ballSpeeds.map((speed, index) => {
 		const {translateY, contactTime} = useBounceY(
 			speed,
 			frame,
@@ -61,7 +61,7 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 
 		return (
 			<div className="flex">
-				<div className="justify-end bg-black">
+				<div className="bg-black">
 					<Circle
 						radius={circleRadius}
 						fill="white"
@@ -70,14 +70,15 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 						}}
 					/>
 				</div>
-				<Loop durationInFrames={contactTime * 2}>
-					<Audio
-						volume={0.2}
-						src={staticFile('key-6.wav')}
-						// startFrom={0}
-						endAt={contactTime * 2 - soundDelay}
-					/>
-				</Loop>
+				<Sequence from={contactTime}>
+					<Loop durationInFrames={contactTime * 2}>
+						<Audio
+							volume={0.2}
+							src={staticFile(`key-${index}.wav`)}
+							endAt={contactTime * 2 - soundDelay}
+						/>
+					</Loop>
+				</Sequence>
 			</div>
 		);
 	});
