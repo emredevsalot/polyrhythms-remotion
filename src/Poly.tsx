@@ -2,6 +2,8 @@ import {
 	AbsoluteFill,
 	Audio,
 	Easing,
+	Loop,
+	Sequence,
 	interpolate,
 	staticFile,
 	useCurrentFrame,
@@ -33,11 +35,13 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 		);
 		return translateX;
 	};
-	const useBounceY = (speed: number): number => {
+	const useBounceY = (
+		speed: number
+	): {translateY: number; contactTime: number} => {
 		const jumpingAnimation = Math.cos(frame * speed * 0.05);
 
-		// const duration = 63 / speed;
-		// sound at this easing : 63, 63*3, 63*5
+		// Specific for this easing
+		const contactTime = 63 / speed;
 
 		const translateY = interpolate(
 			jumpingAnimation,
@@ -47,8 +51,11 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 				easing: Easing.bezier(0, 0, 0, 1),
 			}
 		);
-		return translateY;
+		return {translateY, contactTime};
 	};
+
+	const {translateY, contactTime} = useBounceY(1);
+	const soundDelay = 8;
 
 	return (
 		<AbsoluteFill className="bg-gray-100 justify-end">
@@ -57,10 +64,19 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 				fill="black"
 				style={{
 					// translateX(${useBounceX(1)}px)
-					transform: `translateY(-${useBounceY(1)}px)`,
+					transform: `translateY(-${translateY}px)`,
 				}}
 			/>
-			{/* <Audio volume={0.5} src={staticFile('key1.mp3')} /> */}
+			<Sequence from={contactTime - soundDelay}>
+				<Loop durationInFrames={contactTime * 2}>
+					<Audio
+						volume={0.2}
+						src={staticFile('key-6.wav')}
+						// startFrom={0}
+						endAt={contactTime * 2 - soundDelay}
+					/>
+				</Loop>
+			</Sequence>
 
 			{/* <div className="absolute top-0">
 				<div>width:{width}</div>
