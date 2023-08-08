@@ -73,7 +73,7 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 				<Sequence from={contactTime}>
 					<Loop durationInFrames={contactTime * 2}>
 						<Audio
-							volume={0.2}
+							volume={0.02}
 							src={staticFile(`key-${index}.wav`)}
 							endAt={contactTime * 2 - soundDelay}
 						/>
