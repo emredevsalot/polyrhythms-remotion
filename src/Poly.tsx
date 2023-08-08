@@ -1,7 +1,9 @@
 import {
 	AbsoluteFill,
+	Audio,
 	Easing,
 	interpolate,
+	staticFile,
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
@@ -40,7 +42,7 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 		const translateY = interpolate(
 			jumpingAnimation,
 			[-1, 1],
-			[height - propOne * 2, 0],
+			[0, height - propOne * 2],
 			{
 				easing: Easing.bezier(0, 0, 0, 1),
 			}
@@ -55,9 +57,10 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 				fill="black"
 				style={{
 					// translateX(${useBounceX(1)}px)
-					transform: `translateY(${useBounceY(1)}px)`,
+					transform: `translateY(-${useBounceY(1)}px)`,
 				}}
 			/>
+			{/* <Audio volume={0.5} src={staticFile('key1.mp3')} /> */}
 
 			{/* <div className="absolute top-0">
 				<div>width:{width}</div>
