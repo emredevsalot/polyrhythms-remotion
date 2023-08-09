@@ -10,5 +10,11 @@ import {webpackOverride} from './src/webpack-override';
 
 Config.setVideoImageFormat('jpeg');
 Config.setOverwriteOutput(true);
+Config.setShouldOpenBrowser(false);
+
+// Decrease render quality for test renders
+Config.setScale(0.3);
+Config.setJpegQuality(40);
+Config.setFrameRange([0, 900]);
 
 Config.overrideWebpackConfig(webpackOverride);
