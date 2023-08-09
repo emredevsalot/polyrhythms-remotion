@@ -1,7 +1,6 @@
 import {
 	AbsoluteFill,
 	Audio,
-	Easing,
 	Loop,
 	Sequence,
 	interpolate,
@@ -17,33 +16,26 @@ export const PolySchema = z.object({
 	circleRadius: z.number(),
 });
 
+const ballAmount = 1;
+const maxLoops = Math.max(ballAmount, 60); // Maximum loop amount the fastest element will make until realignment.
+const realignDuration = 7200; // Total time for all dots to realign at the starting point //TODO: start at contact point to have sound at realignment
+
 const useBounceY = (
-	velocity: number,
 	frame: number,
 	height: number,
-	circleRadius: number
-): {translateY: number; contactTime: number} => {
-	velocity = velocity * 10;
-	const jumpingAnimation = Math.cos(frame * velocity * 0.05);
-
-	// Specific for this easing
-	const contactTime = 63 / velocity;
-
+	circleRadius: number,
+	oneLoopDuration: number
+): {translateY: number} => {
 	const translateY = interpolate(
-		jumpingAnimation,
-		[-1, 1],
-		[0, height - circleRadius * 2],
+		frame % oneLoopDuration,
+		[0, oneLoopDuration / 2, oneLoopDuration / 2 + 1, oneLoopDuration],
+		[0, height - circleRadius * 2, height - circleRadius * 2, 0],
 		{
-			easing: Easing.bezier(0, 0, 1, 0),
+			// easing: Easing.bezier(0.1, 0.3, 0.3, 0.1),
 		}
 	);
-	return {translateY, contactTime};
+	return {translateY};
 };
-
-const soundDelay = 8;
-const ballAmount = 10;
-const maxLoops = Math.max(ballAmount, 40); // Maximum loop amount the fastest element will make. (Must be above ballAmount)
-const realignDuration = 600; // Total time for all dots to realign at the starting point(not working: Realigns at the top at 7535 and 15070 instead)
 
 export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	circleRadius: circleRadius,
@@ -54,13 +46,13 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	const balls = [];
 	for (let i = 0; i < ballAmount; i++) {
 		const numberOfLoops = maxLoops - i;
-		const velocity = numberOfLoops / realignDuration;
+		const oneLoopDuration = realignDuration / numberOfLoops;
 
-		const {translateY, contactTime} = useBounceY(
-			velocity,
+		const {translateY} = useBounceY(
 			frame,
 			height,
-			circleRadius
+			circleRadius,
+			oneLoopDuration
 		);
 		balls.push(
 			<div className="flex" key={i}>
@@ -74,12 +66,12 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 						}}
 					/>
 				</div>
-				<Sequence from={0}>
-					<Loop durationInFrames={contactTime * 2}>
+				<Sequence from={oneLoopDuration / 2}>
+					<Loop durationInFrames={oneLoopDuration}>
 						<Audio
 							volume={0.02}
 							src={staticFile(`key-${i}.wav`)}
-							endAt={contactTime * 2 - soundDelay}
+							endAt={oneLoopDuration - 10}
 						/>
 					</Loop>
 				</Sequence>
