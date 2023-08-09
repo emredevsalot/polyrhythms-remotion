@@ -3,7 +3,6 @@ import {
 	Audio,
 	Loop,
 	Sequence,
-	interpolate,
 	staticFile,
 	useCurrentFrame,
 	useVideoConfig,
@@ -11,31 +10,15 @@ import {
 import {Circle} from '@remotion/shapes';
 
 import {z} from 'zod';
+import {useBounceCos} from './hooks';
 
 export const PolySchema = z.object({
 	circleRadius: z.number(),
 });
 
-const ballAmount = 1;
+const ballAmount = 10;
 const maxLoops = Math.max(ballAmount, 60); // Maximum loop amount the fastest element will make until realignment.
 const realignDuration = 7200; // Total time for all dots to realign at the starting point //TODO: start at contact point to have sound at realignment
-
-const useBounceY = (
-	frame: number,
-	height: number,
-	circleRadius: number,
-	oneLoopDuration: number
-): {translateY: number} => {
-	const translateY = interpolate(
-		frame % oneLoopDuration,
-		[0, oneLoopDuration / 2, oneLoopDuration / 2 + 1, oneLoopDuration],
-		[0, height - circleRadius * 2, height - circleRadius * 2, 0],
-		{
-			// easing: Easing.bezier(0.1, 0.3, 0.3, 0.1),
-		}
-	);
-	return {translateY};
-};
 
 export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	circleRadius: circleRadius,
@@ -48,12 +31,14 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 		const numberOfLoops = maxLoops - i;
 		const oneLoopDuration = realignDuration / numberOfLoops;
 
-		const {translateY} = useBounceY(
+		const {translateY} = useBounceCos(
 			frame,
 			height,
 			circleRadius,
+			maxLoops,
 			oneLoopDuration
 		);
+
 		balls.push(
 			<div className="flex" key={i}>
 				<div className="bg-black">
