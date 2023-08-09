@@ -10,7 +10,7 @@ import {
 import {Circle} from '@remotion/shapes';
 
 import {z} from 'zod';
-import {useBounceCos} from './hooks';
+import {useBounceCos, useBounceLinear} from './hooks';
 
 export const PolySchema = z.object({
 	circleRadius: z.number(),
@@ -51,7 +51,7 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 						}}
 					/>
 				</div>
-				<Sequence from={oneLoopDuration / 2}>
+				<Sequence from={0}>
 					<Loop durationInFrames={oneLoopDuration}>
 						<Audio
 							volume={0.02}
