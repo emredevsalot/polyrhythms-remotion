@@ -32,9 +32,9 @@ const useBounceY = (
 	const translateY = interpolate(
 		jumpingAnimation,
 		[-1, 1],
-		[height - circleRadius * 2, 0],
+		[0, height - circleRadius * 2],
 		{
-			easing: Easing.bezier(0, 1, 1, 1),
+			easing: Easing.bezier(0, 0, 1, 0),
 		}
 	);
 	return {translateY, contactTime};
@@ -69,12 +69,12 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 						radius={circleRadius}
 						fill="white"
 						style={{
-							opacity: `${translateY / 720}`,
+							// opacity: `${translateY / 720}`,
 							transform: `translateY(${translateY}px)`,
 						}}
 					/>
 				</div>
-				<Sequence from={contactTime}>
+				<Sequence from={0}>
 					<Loop durationInFrames={contactTime * 2}>
 						<Audio
 							volume={0.02}

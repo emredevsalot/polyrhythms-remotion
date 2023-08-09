@@ -22,7 +22,7 @@ export const RemotionRoot: React.FC = () => {
 			<Composition
 				id="Poly"
 				component={Poly}
-				durationInFrames={2400}
+				durationInFrames={15 * 60 * 30}
 				fps={30}
 				width={1280}
 				height={720}
