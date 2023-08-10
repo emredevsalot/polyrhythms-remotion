@@ -19,6 +19,7 @@ export const PolySchema = z.object({
 const ballAmount = 10;
 const maxLoops = Math.max(ballAmount, 60); // Maximum loop amount the fastest element will make until realignment.
 const realignDuration = 7200; // Total time for all dots to realign at the starting point //TODO: start at contact point to have sound at realignment
+const scale = 1;
 
 export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	circleRadius: circleRadius,
@@ -30,11 +31,12 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	for (let i = 0; i < ballAmount; i++) {
 		const numberOfLoops = maxLoops - i;
 		const oneLoopDuration = realignDuration / numberOfLoops;
+		const dynamicRadius = circleRadius * (1 + i * (scale - 1));
 
 		const {translateY} = useBounceCos(
 			frame,
 			height,
-			circleRadius,
+			dynamicRadius,
 			maxLoops,
 			oneLoopDuration
 		);
@@ -43,7 +45,7 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 			<div className="flex" key={i}>
 				<div className="bg-black">
 					<Circle
-						radius={circleRadius}
+						radius={dynamicRadius}
 						fill="white"
 						style={{
 							// opacity: `${translateY / 720}`,
