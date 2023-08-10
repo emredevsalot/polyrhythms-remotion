@@ -16,10 +16,11 @@ export const PolySchema = z.object({
 	circleRadius: z.number(),
 });
 
-const ballAmount = 10;
+const ballAmount = 1;
 const maxLoops = Math.max(ballAmount, 60); // Maximum loop amount the fastest element will make until realignment.
 const realignDuration = 7200; // Total time for all dots to realign at the starting point //TODO: start at contact point to have sound at realignment
 const scale = 1;
+const soundDelay = 5;
 
 export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	circleRadius: circleRadius,
@@ -53,14 +54,19 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 						}}
 					/>
 				</div>
-				<Sequence from={0}>
-					<Loop durationInFrames={oneLoopDuration}>
-						<Audio
-							volume={0.02}
-							src={staticFile(`key-${i}.wav`)}
-							endAt={oneLoopDuration - 10}
-						/>
-					</Loop>
+				<Sequence
+					from={
+						Math.floor(frame / (oneLoopDuration - soundDelay)) *
+							oneLoopDuration -
+						soundDelay
+					}
+					// durationInFrames={oneLoopDuration - soundDelay}
+				>
+					<Audio
+						volume={0.02}
+						src={staticFile(`key-${i}.wav`)}
+						// endAt={oneLoopDuration - soundDelay}
+					/>
 				</Sequence>
 			</div>
 		);
