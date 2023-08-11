@@ -27,7 +27,11 @@ export const RemotionRoot: React.FC = () => {
 				width={1280}
 				height={720}
 				schema={PolySchema}
-				defaultProps={{circleRadius: 36}}
+				defaultProps={{
+					circleRadius: 36,
+					numberOfBalls: 10,
+					realignDuration: 7200,
+				}}
 			/>
 		</>
 	);

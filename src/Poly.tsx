@@ -13,22 +13,24 @@ import {useBounceCos} from './hooks';
 
 export const PolySchema = z.object({
 	circleRadius: z.number(),
+	numberOfBalls: z.number(),
+	realignDuration: z.number(),
 });
-
-const ballAmount = 10;
-const maxLoops = Math.max(ballAmount, 60); // Maximum loop amount the fastest element will make until realignment.
-const realignDuration = 7200; // Total time for all dots to realign at the starting point //TODO: start at contact point to have sound at realignment
-const scale = 1;
-const soundDelay = 5;
 
 export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	circleRadius: circleRadius,
+	numberOfBalls: numberOfBalls,
+	realignDuration: realignDuration, // Total time for all dots to realign at the starting point
 }) => {
+	const maxLoops = Math.max(numberOfBalls, 60); // Maximum loop amount the fastest element will make until realignment.
+	const scale = 1;
+	const soundDelay = 0;
+
 	const {height} = useVideoConfig();
 	const frame = useCurrentFrame();
 
 	const balls = [];
-	for (let i = 0; i < ballAmount; i++) {
+	for (let i = 0; i < numberOfBalls; i++) {
 		const numberOfLoops = maxLoops - i;
 		const oneLoopDuration = realignDuration / numberOfLoops;
 		const dynamicRadius = circleRadius * (1 + i * (scale - 1));
@@ -40,26 +42,80 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 			maxLoops,
 			oneLoopDuration
 		);
+		const hitFrameAudio =
+			Math.floor((frame + soundDelay) / oneLoopDuration) * oneLoopDuration -
+			soundDelay;
+		const hitFrameVisual =
+			Math.floor(frame / oneLoopDuration) * oneLoopDuration;
+
+		const isGoingDown = () => {
+			return frame > hitFrameVisual + oneLoopDuration / 2 ? true : false;
+		};
+
+		/**
+		 * Calculates the normalized Y value of an object's position based on the provided direction.
+		 * @param direction - The direction parameter can be one of three values: 'up', 'down', or 'both'.
+		 *                   - 'up': Returns the normalized Y value only while the object is moving upwards.
+		 *                   - 'down': Returns the normalized Y value only while the object is moving downwards.
+		 *                   - 'both': Returns the normalized Y value regardless of the object's movement direction.
+		 * @returns The normalized Y value of the object's position based on the specified direction.
+		 * @throws Throws an error if an invalid direction is provided.
+		 */
+		const getNormalizedY = (direction: 'up' | 'down' | 'both'): number => {
+			const y = 1 - translateY / (height - 2 * dynamicRadius);
+
+			switch (direction) {
+				case 'down':
+					if (isGoingDown() && y > 0.001) return y;
+					return 1;
+				case 'up':
+					if (!isGoingDown() && y > 0.001) return y;
+					return 1;
+				case 'both':
+					return y;
+				default:
+					break;
+			}
+			// TypeScript will throw an error if this line is reached, because all cases are handled above
+			throw new Error('Invalid direction');
+		};
 
 		balls.push(
 			<div className="flex" key={i}>
-				<div className="bg-black">
-					<Circle
-						radius={dynamicRadius}
-						fill="white"
+				<div
+					className={
+						// isGoingDown() ? 'bg-red-600' : 'bg-blue-600'
+						'bg-orange-700'
+					}
+				>
+					<div
+						className="h-full"
 						style={{
-							// opacity: `${translateY / 720}`,
-							transform: `translateY(${translateY}px)`,
+							backgroundColor: `rgba(220,220,10, ${getNormalizedY('up')})`,
 						}}
-					/>
+					>
+						<Circle
+							radius={dynamicRadius}
+							fill="#c2410c"
+							style={{
+								// opacity: `${translateY / height}`,
+								transform: `translateY(${translateY}px)`,
+							}}
+						/>
+						{/* <Rect
+							width={dynamicRadius * 2}
+							height={dynamicRadius * 2}
+							fill="#c2410c"
+							style={{
+								// opacity: `${translateY / height}`,
+								transform: `translateY(${translateY}px)`,
+							}}
+						/> */}
+					</div>
 				</div>
 				<Sequence
 					name="AudioSeq"
-					from={
-						Math.floor((frame + soundDelay) / oneLoopDuration) *
-							oneLoopDuration -
-						soundDelay
-					}
+					from={hitFrameAudio}
 					durationInFrames={oneLoopDuration - soundDelay}
 				>
 					<Audio
@@ -73,7 +129,7 @@ export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
 	}
 
 	return (
-		<AbsoluteFill className="bg-gray-100 flex">
+		<AbsoluteFill className="bg-black flex">
 			<Sequence from={0}>
 				<div className="flex justify-evenly w-full">{balls}</div>
 			</Sequence>
