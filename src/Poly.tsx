@@ -1,7 +1,6 @@
 import {
 	AbsoluteFill,
 	Audio,
-	Loop,
 	Sequence,
 	staticFile,
 	useCurrentFrame,
@@ -10,7 +9,7 @@ import {
 import {Circle} from '@remotion/shapes';
 
 import {z} from 'zod';
-import {useBounceCos, useBounceLinear} from './hooks';
+import {useBounceCos} from './hooks';
 
 export const PolySchema = z.object({
 	circleRadius: z.number(),
