@@ -1,6 +1,6 @@
 import {Composition} from 'remotion';
 import './style.css';
-import {Poly, PolySchema} from './Poly';
+import {OrangeBalls, OrangeBallsSchema} from './OrangeBalls';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -20,13 +20,13 @@ export const RemotionRoot: React.FC = () => {
 				}}
 			/> */}
 			<Composition
-				id="Poly"
-				component={Poly}
+				id="OrangeBalls"
+				component={OrangeBalls}
 				durationInFrames={15 * 60 * 30}
 				fps={30}
 				width={1280}
 				height={720}
-				schema={PolySchema}
+				schema={OrangeBallsSchema}
 				defaultProps={{
 					circleRadius: 36,
 					numberOfBalls: 10,

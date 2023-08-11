@@ -11,13 +11,13 @@ import {Circle} from '@remotion/shapes';
 import {z} from 'zod';
 import {useBounceCos} from './hooks';
 
-export const PolySchema = z.object({
+export const OrangeBallsSchema = z.object({
 	circleRadius: z.number(),
 	numberOfBalls: z.number(),
 	realignDuration: z.number(),
 });
 
-export const Poly: React.FC<z.infer<typeof PolySchema>> = ({
+export const OrangeBalls: React.FC<z.infer<typeof OrangeBallsSchema>> = ({
 	circleRadius: circleRadius,
 	numberOfBalls: numberOfBalls,
 	realignDuration: realignDuration, // Total time for all dots to realign at the starting point
