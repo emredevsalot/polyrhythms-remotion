@@ -27,7 +27,7 @@ export const useBounceCos = (
 	oneLoopDuration: number
 ): {translateY: number} => {
 	const jumpingAnimation = Math.cos(
-		frame * (Math.PI / 60) * 2 * (maxLoops / oneLoopDuration)
+		frame * (Math.PI / 30) * (maxLoops / oneLoopDuration)
 	);
 
 	const translateY = interpolate(
@@ -35,6 +35,7 @@ export const useBounceCos = (
 		[-1, 1],
 		[0, height - circleRadius * 2],
 		{
+			easing: Easing.bezier(0, 0, 1, 0),
 			// easing: Easing.bezier(0.1, 0.3, 0.3, 0.1),
 		}
 	);
