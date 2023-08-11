@@ -82,21 +82,18 @@ export const OrangeBalls: React.FC<z.infer<typeof OrangeBallsSchema>> = ({
 
 		balls.push(
 			<div className="flex" key={i}>
-				<div
-					className={
-						// isGoingDown() ? 'bg-red-600' : 'bg-blue-600'
-						'bg-orange-700'
-					}
-				>
+				<div className={'bg-yellow-300'}>
 					<div
 						className="h-full"
 						style={{
-							backgroundColor: `rgba(220,220,10, ${getNormalizedY('up')})`,
+							background: `linear-gradient(0deg, rgba(245, 158, 11, ${
+								1 - getNormalizedY('up')
+							}) 0%, rgba(0, 0, 0, 0) 60%)`,
 						}}
 					>
 						<Circle
 							radius={dynamicRadius}
-							fill="#c2410c"
+							fill="rgb(245,158,11)"
 							style={{
 								// opacity: `${translateY / height}`,
 								transform: `translateY(${translateY}px)`,
@@ -129,7 +126,7 @@ export const OrangeBalls: React.FC<z.infer<typeof OrangeBallsSchema>> = ({
 	}
 
 	return (
-		<AbsoluteFill className="bg-black flex">
+		<AbsoluteFill className="bg-yellow-300 flex">
 			<Sequence from={0}>
 				<div className="flex justify-evenly w-full">{balls}</div>
 			</Sequence>
