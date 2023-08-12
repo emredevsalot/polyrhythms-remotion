@@ -11,7 +11,7 @@ import {webpackOverride} from './src/webpack-override';
 Config.setVideoImageFormat('jpeg');
 Config.setOverwriteOutput(true);
 Config.setShouldOpenBrowser(false);
-Config.setMaxTimelineTracks(10);
+Config.setMaxTimelineTracks(0);
 
 // Decrease render quality for test renders
 Config.setScale(0.3);
