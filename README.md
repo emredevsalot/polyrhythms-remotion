@@ -5,6 +5,12 @@
 - [x] Calculate velocity for realignment
 - [x] Start from contact point again, to make them realign there.
 
+## Ideas
+
+- [ ] Increase number of balls each hit
+- [ ] Put all the balls inside eachother with different low opacities.(faster=smaller)
+- [ ] Try horizontal movement
+
 ## Remotion video with Tailwind
 
 <p align="center">
