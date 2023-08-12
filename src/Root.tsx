@@ -1,7 +1,7 @@
 import {Composition} from 'remotion';
 import './style.css';
-import {OrangeBalls, OrangeBallsSchema} from './OrangeBalls';
-import {PurpleBalls, PurpleBallsSchema} from './PurpleBalls';
+import {OrangeBalls, OrangeBallsSchema} from './compositions/OrangeBalls';
+import {PurpleBalls, PurpleBallsSchema} from './compositions/PurpleBalls';
 
 export const RemotionRoot: React.FC = () => {
 	return (

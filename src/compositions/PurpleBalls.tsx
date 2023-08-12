@@ -6,21 +6,23 @@ import {
 	useCurrentFrame,
 	useVideoConfig,
 } from 'remotion';
-import {Circle} from '@remotion/shapes';
 
 import {z} from 'zod';
-import {useBounceCos} from './hooks';
+import {Fragment} from 'react';
+import {useBounceCos} from '../hooks';
 
-export const OrangeBallsSchema = z.object({
+export const PurpleBallsSchema = z.object({
 	circleRadius: z.number(),
 	numberOfBalls: z.number(),
 	realignDuration: z.number(),
+	visualEffectsAreOn: z.boolean(),
 });
 
-export const OrangeBalls: React.FC<z.infer<typeof OrangeBallsSchema>> = ({
+export const PurpleBalls: React.FC<z.infer<typeof PurpleBallsSchema>> = ({
 	circleRadius: circleRadius,
 	numberOfBalls: numberOfBalls,
 	realignDuration: realignDuration, // Total time for all dots to realign at the starting point
+	visualEffectsAreOn: visualEffectsAreOn,
 }) => {
 	const maxLoops = Math.max(numberOfBalls, 60); // Maximum loop amount the fastest element will make until realignment.
 	const scale = 1;
@@ -42,9 +44,11 @@ export const OrangeBalls: React.FC<z.infer<typeof OrangeBallsSchema>> = ({
 			maxLoops,
 			oneLoopDuration
 		);
+
 		const hitFrameAudio =
 			Math.floor((frame + soundDelay) / oneLoopDuration) * oneLoopDuration -
 			soundDelay;
+
 		const hitFrameVisual =
 			Math.floor(frame / oneLoopDuration) * oneLoopDuration;
 
@@ -80,34 +84,47 @@ export const OrangeBalls: React.FC<z.infer<typeof OrangeBallsSchema>> = ({
 			throw new Error('Invalid direction');
 		};
 
+		const getDropShadowFilter = () => {
+			if (visualEffectsAreOn) {
+				return {
+					filter: `drop-shadow(0 0 28px rgba(255, 10, 10, ${
+						translateY / height
+					}))`,
+				};
+			}
+			return {};
+		};
+
 		balls.push(
 			<div className="flex" key={i}>
-				<div className={'bg-yellow-300'}>
+				<div className={'bg-black/10'} style={{...getDropShadowFilter()}}>
+					{/* Full height rectangle */}
 					<div
 						className="h-full"
 						style={{
+							...getDropShadowFilter(),
 							background: `linear-gradient(0deg, rgba(245, 158, 11, ${
 								1 - getNormalizedY('up')
 							}) 0%, rgba(0, 0, 0, 0) 60%)`,
 						}}
 					>
-						<Circle
-							radius={dynamicRadius}
-							fill="rgb(245,158,11)"
+						{/* Shape */}
+						<svg
+							height={`${dynamicRadius * 2}`}
+							width={`${dynamicRadius * 2}`}
+							className="fill-amber-500"
 							style={{
-								// opacity: `${translateY / height}`,
-								transform: `translateY(${translateY}px)`,
+								opacity: `${translateY / height}`,
+								transform: `translate3d(0, ${translateY}px, 0)`,
+								willChange: 'transform',
 							}}
-						/>
-						{/* <Rect
-							width={dynamicRadius * 2}
-							height={dynamicRadius * 2}
-							fill="#c2410c"
-							style={{
-								// opacity: `${translateY / height}`,
-								transform: `translateY(${translateY}px)`,
-							}}
-						/> */}
+						>
+							<circle
+								cx={`${dynamicRadius}`}
+								cy={`${dynamicRadius}`}
+								r={`${dynamicRadius}`}
+							/>
+						</svg>
 					</div>
 				</div>
 				<Sequence
@@ -126,9 +143,13 @@ export const OrangeBalls: React.FC<z.infer<typeof OrangeBallsSchema>> = ({
 	}
 
 	return (
-		<AbsoluteFill className="bg-yellow-300 flex">
+		<AbsoluteFill className="bg-[rgb(35,0,50)] flex">
 			<Sequence from={0}>
-				<div className="flex justify-evenly w-full">{balls}</div>
+				<div className="flex justify-evenly w-full">
+					{balls.map((ball, index) => (
+						<Fragment key={index}>{ball}</Fragment>
+					))}
+				</div>
 			</Sequence>
 		</AbsoluteFill>
 	);
