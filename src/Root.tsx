@@ -1,6 +1,5 @@
 import {Composition} from 'remotion';
 import './style.css';
-import {OrangeBalls, OrangeBallsSchema} from './compositions/OrangeBalls';
 import {PurpleBalls, PurpleBallsSchema} from './compositions/PurpleBalls';
 
 export const RemotionRoot: React.FC = () => {
@@ -20,7 +19,7 @@ export const RemotionRoot: React.FC = () => {
 					logoColor: '#00bfff',
 				}}
 			/> */}
-			<Composition
+			{/* <Composition
 				id="OrangeBalls"
 				component={OrangeBalls}
 				durationInFrames={15 * 60 * 30}
@@ -33,7 +32,7 @@ export const RemotionRoot: React.FC = () => {
 					numberOfBalls: 10,
 					realignDuration: 7200,
 				}}
-			/>
+			/> */}
 			<Composition
 				id="PurpleBalls"
 				component={PurpleBalls}
@@ -46,6 +45,7 @@ export const RemotionRoot: React.FC = () => {
 					circleRadius: 15,
 					numberOfBalls: 15,
 					realignDuration: 7200,
+					scale: 1,
 					visualEffectsAreOn: false,
 				}}
 			/>
