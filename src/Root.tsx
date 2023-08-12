@@ -1,6 +1,7 @@
 import {Composition} from 'remotion';
 import './style.css';
 import {OrangeBalls, OrangeBallsSchema} from './OrangeBalls';
+import {PurpleBalls, PurpleBallsSchema} from './PurpleBalls';
 
 export const RemotionRoot: React.FC = () => {
 	return (
@@ -31,6 +32,21 @@ export const RemotionRoot: React.FC = () => {
 					circleRadius: 36,
 					numberOfBalls: 10,
 					realignDuration: 7200,
+				}}
+			/>
+			<Composition
+				id="PurpleBalls"
+				component={PurpleBalls}
+				durationInFrames={4 * 60 * 30}
+				fps={30}
+				width={1280}
+				height={720}
+				schema={PurpleBallsSchema}
+				defaultProps={{
+					circleRadius: 15,
+					numberOfBalls: 15,
+					realignDuration: 7200,
+					visualEffectsAreOn: false,
 				}}
 			/>
 		</>
