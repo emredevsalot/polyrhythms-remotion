@@ -45,10 +45,16 @@ const Balls: React.FC<BallsProps> = ({
 			height
 		);
 
+		// const fixedOneLoopDuration = oneLoopDuration;
+		const fixedOneLoopDuration = Number(oneLoopDuration.toFixed(2));
+
+		// console.log(i, 7200 / fixedOneLoopDuration);
+		console.log(i, fixedOneLoopDuration);
+
 		const {translateY, hitFrameAudio, normalizedY} = getDynamicBallValues(
 			frame,
 			maxLoops,
-			oneLoopDuration,
+			fixedOneLoopDuration,
 			scaledRadius,
 			height,
 			soundDelay
@@ -93,14 +99,25 @@ const Balls: React.FC<BallsProps> = ({
 				<Sequence
 					name="AudioSeq"
 					from={hitFrameAudio}
-					durationInFrames={oneLoopDuration - soundDelay}
+					durationInFrames={fixedOneLoopDuration - soundDelay}
 				>
 					<Audio
 						volume={0.02}
 						src={staticFile(`key-${i}.wav`)}
-						// endAt={oneLoopDuration - soundDelay}
+						// endAt={fixedOneLoopDuration - soundDelay}
 					/>
 				</Sequence>
+				{/* <Sequence
+					name="AudioSeq"
+					from={0}
+					// durationInFrames={fixedOneLoopDuration - soundDelay}
+				>
+					<Audio
+						volume={0.02}
+						src={staticFile(`full4min.mp3`)}
+						// endAt={fixedOneLoopDuration - soundDelay}
+					/>
+				</Sequence> */}
 			</div>
 		);
 	}
