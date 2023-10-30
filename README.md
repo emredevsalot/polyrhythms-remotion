@@ -1,4 +1,12 @@
-# TODOS
+# Polyrhythms Remotion
+I wanted to recreate the audio visual animations shown in [Hyperplexed's Polyrhythms video](https://www.youtube.com/watch?v=Kt3DavtVGVE) with Remotion.
+
+
+https://github.com/emredevsalot/polyrhythms-remotion/assets/72770244/48dc737f-639a-4eb1-9072-3db5850c78ad
+
+
+
+## TODOS
 
 - [x] Add different keys
 - [x] Start balls at the top
