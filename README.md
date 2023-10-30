@@ -1,10 +1,7 @@
 # Polyrhythms Remotion
 I wanted to recreate the audio visual animations shown in [Hyperplexed's Polyrhythms video](https://www.youtube.com/watch?v=Kt3DavtVGVE) with Remotion.
 
-
-https://github.com/emredevsalot/polyrhythms-remotion/assets/72770244/48dc737f-639a-4eb1-9072-3db5850c78ad
-
-
+https://github.com/emredevsalot/polyrhythms-remotion/assets/72770244/e44109e6-342f-4ebc-9191-91a5e1cf871c
 
 ## TODOS
 
